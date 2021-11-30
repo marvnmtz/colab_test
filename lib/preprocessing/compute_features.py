@@ -14,7 +14,8 @@ def compute_features(path_img, imglist, ground_truth, traindata, colab):
     FIRST_IMG = True
     sep = "/" if colab else "\\"  # Seperator depends on system
     for file_name in imglist:
-        print(counter, ":", file_name)
+        if counter%50 == 0:
+            print(counter, ":", file_name)
         counter += 1
         if file_name.split('.')[1] == 'png':
             try:
