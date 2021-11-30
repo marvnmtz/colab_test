@@ -11,7 +11,7 @@ from lib.preprocessing.compute_features import *
 
 if __name__ == '__main__':
      
-    colab = True  # Specify whether you run the script on google colab or not  
+    colab = False  # Specify whether you run the script on google colab or not  
     traindata = True    
     
             
@@ -19,7 +19,7 @@ if __name__ == '__main__':
     
     # load ground truth data
     if colab == True:
-        start = "/content/gdrive/MyDrive/ISiM"
+        start = "/content"
         sep = "/"
     else:
         start = os.getcwd()
@@ -43,7 +43,7 @@ if __name__ == '__main__':
     imglist = random.sample(imglist,100)  # Uncomment for testing
     
     start = timeit.default_timer()
-    if colab == True:
+    if colab == False:
         #%% Without Multiprocessing
         df_features = compute_features(path_img, imglist, ground_truth, traindata, colab)
     
