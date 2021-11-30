@@ -130,7 +130,7 @@ def compute_features(path_img, imglist, ground_truth, traindata, colab):
                                 #features_this, feature_labels_this = matrix_features(fimg, label)
                                 #features.extend(features_this)
                                 #feature_labels.extend(feature_labels_this)
-                                print(num, theta, sigma, lamda, gamma)
+                                #print(num, theta, sigma, lamda, gamma)
             
                                 num += 1  #Increment for gabor column label
                                     
