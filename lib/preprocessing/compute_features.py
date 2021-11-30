@@ -124,13 +124,13 @@ def compute_features(path_img, imglist, ground_truth, traindata, colab):
                         for lamda in lamda_list:   #Range of wavelengths
                             for gamma in gamma_list:   #Gamma values of 0.05 and 0.5
                                            
-                                #label = 'Gabor' + str(num)  #Label Gabor columns as Gabor1, Gabor2, etc. 
-                                #kernel = cv2.getGaborKernel((ksize, ksize), sigma, theta, lamda, gamma, phi, ktype=cv2.CV_32F)    
+                                label = 'Gabor' + str(num)  #Label Gabor columns as Gabor1, Gabor2, etc. 
+                                kernel = cv2.getGaborKernel((ksize, ksize), sigma, theta, lamda, gamma, phi, ktype=cv2.CV_32F)    
                                 #Now filter the image and add values to a new column 
-                                #fimg = cv2.filter2D(img, cv2.CV_8UC3, kernel) # Filtering
-                                #features_this, feature_labels_this = matrix_features(fimg, label)
-                                #features.extend(features_this)
-                                #feature_labels.extend(feature_labels_this)
+                                fimg = cv2.filter2D(img, cv2.CV_8UC3, kernel) # Filtering
+                                features_this, feature_labels_this = matrix_features(fimg, label)
+                                features.extend(features_this)
+                                feature_labels.extend(feature_labels_this)
                                 #print(num, theta, sigma, lamda, gamma)
             
                                 num += 1  #Increment for gabor column label

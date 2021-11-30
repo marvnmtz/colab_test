@@ -40,7 +40,7 @@ if __name__ == '__main__':
         
     
     imglist = os.listdir(path_img)
-    imglist = random.sample(imglist,100)  # Uncomment for testing
+    imglist = random.sample(imglist,50)  # Uncomment for testing
     
     start = timeit.default_timer()
     if colab == False:
