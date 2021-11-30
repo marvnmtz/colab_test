@@ -9,30 +9,37 @@ from multiprocessing import Pool
 from lib.preprocessing.compute_features import *
 
 if __name__ == '__main__':
-        
+     
+    colab = True  # Specify whether you run the script on google colab or not  
     traindata = True    
-    start = os.getcwd()
+    
             
     df_features = pd.DataFrame()
     
     # load ground truth data
-    path_txt = start + "\\ISM"
+    if colab == True:
+        start = "/content/gdrive/MyDrive/ISiM"
+        sep = "/"
+    else:
+        start = os.getcwd()
+        sep = "\\"
+    path_txt = start + sep + "ISM"
     ground_truth = []
     if traindata == True:
-        train_txt = open(path_txt + "\\train.txt", "r")
+        train_txt = open(path_txt + sep + "train.txt", "r")
         ground_truth = train_txt.readlines()
         train_txt.close()
         
     
     # load images
     if traindata == True:
-        path_img = start + "\\ISM\\train"
+        path_img = path_txt + sep + "train"
     else:
-        path_img = start + "\\ISM\\test"
+        path_img = path_txt + sep + "test"
         
     
     imglist = os.listdir(path_img)
-    #imglist = random.sample(imglist,10)  # Uncomment for testing
+    imglist = random.sample(imglist,10)  # Uncomment for testing
     
     # create sublists
     length_imglist = len(imglist)
