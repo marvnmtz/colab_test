@@ -1,0 +1,52 @@
+# -*- coding: utf-8 -*-
+import os
+import cv2
+import random
+import pandas as pd
+from skimage.feature import greycomatrix, greycoprops
+from multiprocessing import Pool
+
+from lib.preprocessing.compute_features import *
+
+if __name__ == '__main__':
+        
+    traindata = True    
+    start = os.getcwd()
+            
+    df_features = pd.DataFrame()
+    
+    # load ground truth data
+    path_txt = start + "\\ISM"
+    ground_truth = []
+    if traindata == True:
+        train_txt = open(path_txt + "\\train.txt", "r")
+        ground_truth = train_txt.readlines()
+        train_txt.close()
+        
+    
+    # load images
+    if traindata == True:
+        path_img = start + "\\ISM\\train"
+    else:
+        path_img = start + "\\ISM\\test"
+        
+    
+    imglist = os.listdir(path_img)
+    #imglist = random.sample(imglist,10)  # Uncomment for testing
+    
+    # create sublists
+    length_imglist = len(imglist)
+    imglist1 = imglist[0:int(length_imglist/4)]
+    imglist2 = imglist[int(length_imglist/4):int(length_imglist/2)]
+    imglist3 = imglist[int(length_imglist/2):3*int(length_imglist/4)]
+    imglist4 = imglist[3*int(length_imglist/4):length_imglist]
+    
+    # process data in parallel
+    #df_features = compute_features(path_img, imglist, ground_truth, traindata)
+    r = []
+    with Pool(processes=4) as pool:
+        r = pool.starmap(compute_features, [(path_img, imglist1, ground_truth, traindata),(path_img, imglist2, ground_truth, traindata),(path_img, imglist3, ground_truth, traindata),(path_img, imglist4, ground_truth, traindata)])
+    #r = compute_features(path_img, imglist1, ground_truth)
+    df_features = pd.concat(r, ignore_index=True)
+        
+    df_features.to_pickle("df_features.pkl")
