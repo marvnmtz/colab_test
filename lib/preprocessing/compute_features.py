@@ -9,16 +9,17 @@ import pywt
 import numpy as np
 from skimage.measure import shannon_entropy
 
-def compute_features(path_img, imglist, ground_truth, traindata):
+def compute_features(path_img, imglist, ground_truth, traindata, colab):
     counter = 1
     FIRST_IMG = True
+    sep = "/" if colab else "\\"  # Seperator depends on system
     for file_name in imglist:
         print(counter, ":", file_name)
         counter += 1
         if file_name.split('.')[1] == 'png':
             try:
                 # load file and convert to grayscale
-                img = cv2.imread(path_img + "\\" + file_name)
+                img = cv2.imread(path_img + sep + file_name)
                 img_gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
                 
                 #%% add filename and diagnosis to feature and label array

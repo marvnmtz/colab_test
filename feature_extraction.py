@@ -45,7 +45,7 @@ if __name__ == '__main__':
     start = timeit.default_timer()
     if colab == True:
         #%% Without Multiprocessing
-        df_features = compute_features(path_img, imglist, ground_truth, traindata)
+        df_features = compute_features(path_img, imglist, ground_truth, traindata, colab)
     
     else:
         #%% With Multiprocessing
