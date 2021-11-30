@@ -43,7 +43,7 @@ if __name__ == '__main__':
     imglist = random.sample(imglist,100)  # Uncomment for testing
     
     start = timeit.default_timer()
-    if colab == True:
+    if colab == False:
         #%% Without Multiprocessing
         df_features = compute_features(path_img, imglist, ground_truth, traindata, colab)
     
