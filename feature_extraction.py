@@ -11,7 +11,7 @@ from lib.preprocessing.compute_features import *
 
 if __name__ == '__main__':
      
-    colab = True  # Specify whether you run the script on google colab or not  
+    colab = False  # Specify whether you run the script on google colab or not  
     traindata = True    
     
             
@@ -40,7 +40,7 @@ if __name__ == '__main__':
         
     
     imglist = os.listdir(path_img)
-    imglist = random.sample(imglist,10)  # Uncomment for testing
+    imglist = random.sample(imglist,100)  # Uncomment for testing
     
     start = timeit.default_timer()
     if colab == True:
@@ -60,7 +60,7 @@ if __name__ == '__main__':
         #df_features = compute_features(path_img, imglist, ground_truth, traindata)
         r = []
         with Pool(processes=4) as pool:
-            r = pool.starmap(compute_features, [(path_img, imglist1, ground_truth, traindata),(path_img, imglist2, ground_truth, traindata),(path_img, imglist3, ground_truth, traindata),(path_img, imglist4, ground_truth, traindata)])
+            r = pool.starmap(compute_features, [(path_img, imglist1, ground_truth, traindata, colab),(path_img, imglist2, ground_truth, traindata, colab),(path_img, imglist3, ground_truth, traindata, colab),(path_img, imglist4, ground_truth, traindata, colab)])
         #r = compute_features(path_img, imglist1, ground_truth)
         df_features = pd.concat(r, ignore_index=True)
     
