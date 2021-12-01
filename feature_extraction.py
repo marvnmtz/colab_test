@@ -40,25 +40,31 @@ if __name__ == '__main__':
         
     
     imglist = os.listdir(path_img)
-    imglist = random.sample(imglist,1000)  # Uncomment for testing
+    imglist = random.sample(imglist,200)  # Uncomment for testing
     
     start = timeit.default_timer()
 
-    #%% With Multiprocessing
-    # create sublists
-    length_imglist = len(imglist)
-    imglist1 = imglist[0:int(length_imglist/4)]
-    imglist2 = imglist[int(length_imglist/4):int(length_imglist/2)]
-    imglist3 = imglist[int(length_imglist/2):3*int(length_imglist/4)]
-    imglist4 = imglist[3*int(length_imglist/4):length_imglist]
+
     
-    # process data in parallel
-    #df_features = compute_features(path_img, imglist, ground_truth, traindata)
-    r = []
-    with Pool(processes=4) as pool:
-        r = pool.starmap(compute_features, [(path_img, imglist1, ground_truth, traindata, colab),(path_img, imglist2, ground_truth, traindata, colab),(path_img, imglist3, ground_truth, traindata, colab),(path_img, imglist4, ground_truth, traindata, colab)])
-    #r = compute_features(path_img, imglist1, ground_truth)
-    df_features = pd.concat(r, ignore_index=True)
+    if colab == True:
+        #%% Without Multiprocessing
+        df_features = compute_features(path_img, imglist, ground_truth, traindata, colab)
+    else:    
+        #%% With Multiprocessing
+        # create sublists
+        length_imglist = len(imglist)
+        imglist1 = imglist[0:int(length_imglist/4)]
+        imglist2 = imglist[int(length_imglist/4):int(length_imglist/2)]
+        imglist3 = imglist[int(length_imglist/2):3*int(length_imglist/4)]
+        imglist4 = imglist[3*int(length_imglist/4):length_imglist]
+        
+        # process data in parallel
+        #df_features = compute_features(path_img, imglist, ground_truth, traindata)
+        r = []
+        with Pool(processes=4) as pool:
+            r = pool.starmap(compute_features, [(path_img, imglist1, ground_truth, traindata, colab),(path_img, imglist2, ground_truth, traindata, colab),(path_img, imglist3, ground_truth, traindata, colab),(path_img, imglist4, ground_truth, traindata, colab)])
+        #r = compute_features(path_img, imglist1, ground_truth)
+        df_features = pd.concat(r, ignore_index=True)
     
     stop = timeit.default_timer()
     print('Time for feature extraction: ', stop - start)
