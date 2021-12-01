@@ -11,7 +11,7 @@ from lib.preprocessing.compute_features import *
 
 if __name__ == '__main__':
      
-    colab = True  # Specify whether you run the script on google colab or not  
+    colab = False  # Specify whether you run the script on google colab or not  
     traindata = True    
     
             
@@ -46,7 +46,7 @@ if __name__ == '__main__':
 
 
     
-    if colab == True:
+    if colab == False:
         #%% Without Multiprocessing
         df_features = compute_features(path_img, imglist, ground_truth, traindata, colab)
     else:    
