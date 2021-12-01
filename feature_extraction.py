@@ -11,7 +11,7 @@ from lib.preprocessing.compute_features import *
 
 if __name__ == '__main__':
      
-    colab = False  # Specify whether you run the script on google colab or not  
+    colab = True  # Specify whether you run the script on google colab or not  
     traindata = True    
     
             
