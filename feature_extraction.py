@@ -42,30 +42,48 @@ if __name__ == '__main__':
     imglist = os.listdir(path_img)
     imglist = random.sample(imglist,200)  # Uncomment for testing
     
-    start = timeit.default_timer()
-
-
     
-    if colab == False:
-        #%% Without Multiprocessing
+
+
+#%% Calculating features  
+    start = timeit.default_timer()  
+    if False:
+        # Without Multiprocessing
         df_features = compute_features(path_img, imglist, ground_truth, traindata, colab)
     else:    
-        #%% With Multiprocessing
+        # With Multiprocessing
+        nr_processes = 8
+        
         # create sublists
         length_imglist = len(imglist)
-        imglist1 = imglist[0:int(length_imglist/4)]
-        imglist2 = imglist[int(length_imglist/4):int(length_imglist/2)]
-        imglist3 = imglist[int(length_imglist/2):3*int(length_imglist/4)]
-        imglist4 = imglist[3*int(length_imglist/4):length_imglist]
+        img_list_chunked = []
+        for i in range(nr_processes):
+            img_list_chunked.append(imglist[round(i*(length_imglist/nr_processes)):round((i+1)*(length_imglist/nr_processes))])
+        
+        
+        # imglist1 = imglist[0:int(length_imglist/4)]
+        # imglist2 = imglist[int(length_imglist/4):int(length_imglist/2)]
+        # imglist3 = imglist[int(length_imglist/2):3*int(length_imglist/4)]
+        # imglist4 = imglist[3*int(length_imglist/4):length_imglist]
+        
+
+        # Create list of arguments
+        arguments = []
+        for i in range(nr_processes):
+            arguments_tuples = (path_img, img_list_chunked[i], ground_truth, traindata, colab)
+            arguments.append(arguments_tuples)
         
         # process data in parallel
-        #df_features = compute_features(path_img, imglist, ground_truth, traindata)
         r = []
-        with Pool(processes=4) as pool:
-            r = pool.starmap(compute_features, [(path_img, imglist1, ground_truth, traindata, colab),(path_img, imglist2, ground_truth, traindata, colab),(path_img, imglist3, ground_truth, traindata, colab),(path_img, imglist4, ground_truth, traindata, colab)])
-        #r = compute_features(path_img, imglist1, ground_truth)
+        with Pool(processes=nr_processes) as pool:
+            r = pool.starmap(compute_features, arguments)
         df_features = pd.concat(r, ignore_index=True)
-    
+        
+        #with Pool(processes=4) as pool:
+        #    r = pool.starmap(compute_features, [(path_img, imglist1, ground_truth, traindata, colab),(path_img, imglist2, ground_truth, traindata, colab),(path_img, imglist3, ground_truth, traindata, colab),(path_img, imglist4, ground_truth, traindata, colab)])
+        #df_features = pd.concat(r, ignore_index=True)
+        
+        
     stop = timeit.default_timer()
     print('Time for feature extraction: ', stop - start)
     df_features.to_pickle("df_features.pkl")
