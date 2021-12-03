@@ -52,7 +52,7 @@ if __name__ == '__main__':
         df_features = compute_features(path_img, imglist, ground_truth, traindata, colab)
     else:    
         # With Multiprocessing
-        nr_processes = 8
+        nr_processes = 4
         
         # create sublists
         length_imglist = len(imglist)
